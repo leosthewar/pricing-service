@@ -1,20 +1,21 @@
 package com.capitole.pricingservice.application.domain.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode
 public class Price {
 
-    private Integer brandId;
-    private Long productId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Integer priceList;
-    private Integer priority;
-    private Double price;
-    private String currency;
-
+    private final Integer brandId;
+    private final Long productId;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
+    private final Integer priceList;
+    private final Double price;
 }
+

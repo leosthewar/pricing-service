@@ -10,6 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * Implementation of the {@link PriceService} port using a JPA repository.
+ *
+ * <p>This class uses{@link PriceRepository} to query the database and retrieve the price for a given brand and product
+ * at a specific application time.
+ *
+ * <p>It implements the {@link PriceService} port.in interface and is annotated with the {@link UseCase} annotation.
+ *
+ * @author Leonardo Rincon - leo.sthewar.rincon@gmail.com
+ * @see PriceService
+ * @see UseCase
+ * @see PriceRepository
+ */
 @RequiredArgsConstructor
 @UseCase
 class PriceServiceImpl implements PriceService {
@@ -20,7 +33,7 @@ class PriceServiceImpl implements PriceService {
     @Transactional(readOnly = true)
     public Optional<Price> getPriceByApplicationTimeBrandIdProductId(PriceQuery priceQuery) {
         // validate business rules
-        return priceRepository.getPriceByBrandIdAndProductIdAndApplicationTime(priceQuery.brandId(), priceQuery.productId(),priceQuery.applicationTime());
+        return priceRepository.getPriceByBrandIdAndProductIdAndApplicationTime(priceQuery.brandId(), priceQuery.productId(), priceQuery.applicationTime());
 
     }
 }

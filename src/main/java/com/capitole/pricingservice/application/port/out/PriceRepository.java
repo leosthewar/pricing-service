@@ -5,7 +5,7 @@ import com.capitole.pricingservice.application.domain.model.Price;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface PriceRepository {
+public interface   PriceRepository {
     /**
      * Retrieves the price for a given brand and product at a specific application time.
      *

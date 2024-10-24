@@ -5,6 +5,12 @@ import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
+/**
+ * Annotation that marks a class as a Spring component representing a use case.
+ *
+ * @author Leonardo Rincon - leo.sthewar.rincon@gmail.com
+ * @see Component
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

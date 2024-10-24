@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
+/**
+ * Annotation that marks a class as a Spring component which is an adapter that uses JPA.
+ *
+ * @author Leonardo Rincon - leo.sthewar.rincon@gmail.com
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

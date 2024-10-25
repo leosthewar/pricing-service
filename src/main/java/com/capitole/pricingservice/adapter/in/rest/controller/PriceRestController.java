@@ -1,5 +1,6 @@
 package com.capitole.pricingservice.adapter.in.rest.controller;
 
+import com.capitole.pricingservice.adapter.in.rest.dto.ErrorResponseDTO;
 import com.capitole.pricingservice.adapter.in.rest.dto.PriceDTO;
 import com.capitole.pricingservice.adapter.in.rest.dto.PriceDTOMapper;
 import com.capitole.pricingservice.adapter.in.rest.exception.PriceNotFoundException;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -54,10 +54,10 @@ import java.util.Optional;
 @RequestMapping("api/prices")
 @RestAdapter
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "successful operation"),
-        @ApiResponse(responseCode = "404", description = "Resource not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        @ApiResponse(responseCode = "200", description = "Price found" , content = @Content(mediaType = "application/json", schema = @Schema(implementation = PriceDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Resource/Price not found", content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorResponseDTO.class))),
+        @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorResponseDTO.class)))
 })
 class PriceRestController {
 

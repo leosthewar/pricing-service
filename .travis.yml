@@ -1,0 +1,10 @@
+language: java
+sudo: false
+
+before_install:
+  - chmod +x mvnw
+
+jdk:
+  - openjdk21
+after_success:
+  - mvn clean test jacoco:report coveralls:report

@@ -16,6 +16,8 @@ Technical test for Capitole, Service to query a product price
 - Lombok
 - Swagger 
 - Intellij IDEA
+- Kubernetes
+- Azure AKS
 
 ### Software architecture and patterns
 - Hexagonal architecture (ports and adapters)
@@ -151,6 +153,11 @@ H2 Console
 Swagger Documentation and Try it out 
 
 ## Kubernetes - Azure AKS
+> **Note:** This a temporary environment to test the service, the cluster is generated with basic configurations and resources using the free tier.
+>
+> If the service is not running, please contact me via email so I can bring the service back up.
+
+
 The service is running in Azure AKS.
 To test the service, use curl in command line or an application like Postman.
 
@@ -162,13 +169,9 @@ curl --location 'http://4.236.214.134/api/prices/1/35455?applicationDate=2020-06
 - `http://4.236.214.134/swagger-ui/index.html`
   Swagger Documentation and Try it out
 
-
-> **Note:** This a temporary environment to test the service, the cluster is generated with basic configurations and resources using the free tier.
-> 
-> If the service is not running, please contact me via email so I can bring the service back up.
-
-`# To - Do
+  
+# To - Do
 - Setup Devops environment ( CI/CD ).
-- Implement a feature to use a production database instead of an in-memory database.
+- Implement a feature to use a real database instead of an in-memory database.
 
 `

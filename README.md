@@ -138,19 +138,37 @@ After running the tests, the coverage report can be found in the target folder. 
 ![My Image](coverage-report.png)
 
 # Test the service
+## Locally
 Use curl in command line or an application like Postman.
 Also, it is possible to test the service using the Swagger UI
 ```shell
 curl --location 'http://localhost:8080/api/prices/1/35455?applicationDate=2020-06-14%2010%3A00%3A00'
 ```
 ## Complementary endpoints
-- http://localhost:8080/h2-console 
+- `http://localhost:8080/h2-console `
 H2 Console 
-- http://localhost:8080/swagger-ui/index.html 
+- `http://localhost:8080/swagger-ui/index.html `
 Swagger Documentation and Try it out 
 
+## Kubernetes - Azure AKS
+The service is running in Azure AKS.
+To test the service, use curl in command line or an application like Postman.
 
-# To - Do
-- Setup Devops environment ( CI/CD )
-- Deploy to a cloud environment
+```shell
+curl --location 'http://4.236.214.134/api/prices/1/35455?applicationDate=2020-06-14%2010%3A00%3A00'
+```
 
+### Swagger UI:
+- `http://4.236.214.134/swagger-ui/index.html`
+  Swagger Documentation and Try it out
+
+
+> **Note:** This a temporary environment to test the service, the cluster is generated with basic configurations and resources using the free tier.
+> 
+> If the service is not running, please contact me via email so I can bring the service back up.
+
+`# To - Do
+- Setup Devops environment ( CI/CD ).
+- Implement a feature to use a production database instead of an in-memory database.
+
+`

@@ -1,8 +1,8 @@
-# pricing-service
+# Pricing-service
 
-# Capitole Technical Test
+# Capitole technical test
 Technical test for Capitole, Service to query a product price
-# Technologycal stack
+# Technological stack
 
 - OS MacOS 14
 - Java 21 
@@ -11,7 +11,7 @@ Technical test for Capitole, Service to query a product price
 - H2
 - JPA 
 - Docker
-- Travis CI
+- Jacoco
 - Junit 5
 - Lombok
 - Swagger 
@@ -83,7 +83,7 @@ Media Type: application/json
 - HTTP Code 400 - Bad Request
 - HTTP Code 500 - Internal Server Error
 
-### Example esponse Body 200 - Price found
+### Example response Body 200 - Price found
 ```shell
 {
     "productId": 35455,
@@ -121,6 +121,21 @@ mvn spring-boot:run
 ```shell
 make up 
 ```
+
+# Test 
+The service has implemented unit tests, integration tests and system tests.
+To run tests run any of the following commands:
+
+```shell
+mvn test 
+``` 
+```shell
+make test 
+```
+
+After running the tests, the coverage report can be found in the target folder. `target/site/jacoco/index.html`
+
+![My Image](coverage-report.png)
 
 # Test the service
 Use curl in command line or an application like Postman.

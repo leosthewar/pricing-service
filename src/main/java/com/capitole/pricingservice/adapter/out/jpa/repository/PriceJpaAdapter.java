@@ -2,12 +2,14 @@ package com.capitole.pricingservice.adapter.out.jpa.repository;
 
 import com.capitole.pricingservice.adapter.out.jpa.entity.PriceEntityMapper;
 import com.capitole.pricingservice.application.domain.model.Price;
+import com.capitole.pricingservice.application.domain.model.PriceSummary;
 import com.capitole.pricingservice.application.port.out.PriceRepository;
 import com.capitole.pricingservice.common.annotation.JpaAdapter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
 /**
  * Implementation of the {@link PriceRepository} port using a JPA repository.
  *
@@ -30,15 +32,26 @@ class PriceJpaAdapter implements PriceRepository {
     /**
      * Retrieves the price for a given brand and product at a specific application time.
      *
-     * @param brandId the identifier of the brand
-     * @param productId the identifier of the product
+     * @param brandId         the identifier of the brand
+     * @param productId       the identifier of the product
      * @param applicationDate the date and time for which the price is requested
      * @return an Optional containing the Price if found, or an empty Optional if not
      */
     @Override
-    public Optional<Price> getPriceByBrandIdAndProductIdAndApplicationTime(Integer brandId, Long productId, LocalDateTime applicationDate) {
+    public Optional<PriceSummary> getPriceByBrandIdAndProductIdAndApplicationTime(Integer brandId, Long productId, LocalDateTime applicationDate) {
 
-        return priceJpaRepository.findTop1ByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByProrityDesc(brandId,productId,applicationDate,applicationDate).
-                map(PriceEntityMapper::toPrice);
+        return priceJpaRepository.findTop1ByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(brandId, productId, applicationDate, applicationDate).
+                                 map(PriceEntityMapper::toPriceFromSummary);
     }
+
+    @Override
+    public Price save(Price price) {
+        return PriceEntityMapper.toPrice(priceJpaRepository.save(PriceEntityMapper.toPriceEntity(price)));
+    }
+
+    public Optional<Price> findById(Long id) {
+        return priceJpaRepository.findById(id)
+                                 .map(PriceEntityMapper::toPrice);
+    }
+
 }

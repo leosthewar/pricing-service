@@ -19,5 +19,5 @@ interface PriceJpaRepository extends JpaRepository<PriceEntity, Long> {
      * @param endDate the end date of the date range
      * @return the top 1 price summary
      */
-    Optional<PriceSummaryProjection> findTop1ByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByProrityDesc(Integer brandId, Long productId, LocalDateTime startDate, LocalDateTime endDate);
+    Optional<PriceSummaryProjection> findTop1ByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(Integer brandId, Long productId, LocalDateTime startDate, LocalDateTime endDate);
 }

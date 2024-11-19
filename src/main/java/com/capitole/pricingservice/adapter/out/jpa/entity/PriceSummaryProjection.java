@@ -10,4 +10,5 @@ public interface PriceSummaryProjection {
     LocalDateTime getStartDate();
     LocalDateTime getEndDate();
     Double getPrice();
+    String getCurrency();
 }

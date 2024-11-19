@@ -2,11 +2,13 @@ package com.capitole.pricingservice.adapter.in.rest.exception;
 
 
 import com.capitole.pricingservice.adapter.in.rest.dto.ErrorResponseDTO;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,36 +27,33 @@ import java.time.format.DateTimeParseException;
 class RestExceptionAdvise {
     private static final Logger logger = LoggerFactory.getLogger(RestExceptionAdvise.class);
 
-    @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<ErrorResponseDTO> handleDateTimeParseException(DateTimeParseException e) {
+    @ExceptionHandler({
+            InvalidFormatException.class,
+            DateTimeParseException.class
+    })
+    public ResponseEntity<ErrorResponseDTO> handleDateFormatExceptions(Exception e) {
         ErrorResponseDTO errorResponse = ErrorResponseDTO.builder()
-                .message("Invalid application date format. Please use yyyy-MM-dd HH:mm:ss.")
+                .message("Invalid  date format. Please use yyyy-MM-dd HH:mm:ss.")
                 .code("INVALID_DATE_FORMAT")
                 .details(e.getMessage())
                 .build();
-        logger.warn("Invalid application date format. exception: {}",e.getMessage());
+        logger.warn("Invalid date format. exception: {}",e.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleConstraintViolationException(ConstraintViolationException e) {
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            ConstraintViolationException.class,
+            MissingServletRequestParameterException.class,
+            HttpMessageNotReadableException.class
+    })
+    public ResponseEntity<ErrorResponseDTO> handleBadRequestExceptions(Exception e) {
         ErrorResponseDTO errorResponse = ErrorResponseDTO.builder()
-                .message("Invalid price query. Please check the input parameters.")
-                .code("INVALID_PRICE_QUERY")
-                .details(e.getMessage())
-                .build();
-        logger.warn("Invalid price query. exception: {}",e.getMessage());
-        return ResponseEntity.badRequest().body(errorResponse);
-    }
-
-    @ExceptionHandler({MissingServletRequestParameterException.class})
-    public ResponseEntity<ErrorResponseDTO> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        ErrorResponseDTO errorResponse = ErrorResponseDTO.builder()
-                .message("Invalid price query. Please check the input parameters.")
-                .code("INVALID_PRICE_QUERY")
-                .details(e.getMessage())
-                .build();
-        logger.warn("Invalid price query. exception: {}",e.getMessage());
+                                                         .message("Invalid request. Please check the input parameters.")
+                                                         .code("BAD_REQUEST")
+                                                         .details(e.getMessage())
+                                                         .build();
+        logger.warn("Invalid request. exception: {}",e.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
@@ -69,6 +68,7 @@ class RestExceptionAdvise {
         logger.warn("Resource not found. exception: {}",e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
     @ExceptionHandler(PriceNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handlePriceNotFoundException(PriceNotFoundException e) {
         ErrorResponseDTO errorResponse = ErrorResponseDTO.builder()
@@ -91,9 +91,5 @@ class RestExceptionAdvise {
         logger.error("An unexpected error occurred. exception: {}",e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
-
-
-
-
 
 }

@@ -61,7 +61,7 @@ This class implements the PriceService interface, handling the business logic re
 
 ### Flow:
 
-- The flow starts from the PriceRestController in the input adapter, which accepts  HTTP requests with the BrandId, ProductId and ApplicationDate, converts it to a PriceQuery, and calls the PriceService to process it.
+- The flow starts from the PriceRestController in the input adapter, which accepts  HTTP requests with the brandId, ProductId and ApplicationDate, converts it to a PriceQuery, and calls the PriceService to process it.
 - The PriceServiceImpl will use the PriceRepository to interact with the persistence  via the PriceJpaAdapter.
 - At this point, the PriceJpaAdapter will  make the query to the database through the PriceJpaRepository and return the result to the PriceServiceImpl which will convert it to a PriceR and return it to the PriceRestController
 - Finally, the PriceRestController will convert the Price to a PriceDTO and return it to the client.

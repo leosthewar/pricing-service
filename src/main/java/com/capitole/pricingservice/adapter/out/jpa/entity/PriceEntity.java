@@ -5,15 +5,13 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "PRICES")
-@Setter
-@Getter
 @EqualsAndHashCode
+@Getter
 @NoArgsConstructor
 public class PriceEntity {
 
@@ -23,20 +21,32 @@ public class PriceEntity {
     private Long id;
     @Column(name = "BRAND_ID")
     private Integer brandId;
-    @Column(name= "PRODUCT_ID")
+    @Column(name = "PRODUCT_ID")
     private Long productId;
-    @Column(name= "PRICE_LIST")
+    @Column(name = "PRICE_LIST")
     private Integer priceList;
-    @Column(name= "PRIORITY")
-    private Integer prority;
-    @Column(name= "START_DATE")
+    @Column(name = "PRIORITY")
+    private Integer priority;
+    @Column(name = "START_DATE")
     private LocalDateTime startDate;
-    @Column(name= "END_DATE")
+    @Column(name = "END_DATE")
     private LocalDateTime endDate;
-    @Column(name= "PRICE")
+    @Column(name = "PRICE")
     private Double price;
-    @Column(name= "CURR")
+    @Column(name = "CURR")
     private String currency;
 
+    public PriceEntity(Long id, Integer brandId, Long productId, Integer priceList, Integer prority,
+                       LocalDateTime startDate, LocalDateTime endDate, Double price, String currency) {
+        this.id = id;
+        this.brandId = brandId;
+        this.productId = productId;
+        this.priceList = priceList;
+        this.priority = prority;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.price = price;
+        this.currency = currency;
+    }
 
 }

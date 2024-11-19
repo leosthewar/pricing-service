@@ -1,6 +1,5 @@
-package com.capitole.pricingservice.application.port.in;
+package com.capitole.pricingservice.application.port.in.model;
 
-import com.capitole.pricingservice.application.port.in.model.PriceQuery;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 

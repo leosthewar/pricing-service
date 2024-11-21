@@ -3,7 +3,7 @@ version: 2.1
 executors:
   java-executor:
     docker:
-      - image: openjdk:21-jdk  # Changed to non-slim version
+      - image: openjdk:21-jdk-slim
     working_directory: ~/repo
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Maven and tar
+          name: Install Maven
           command: |
             apt-get update
             apt-get install -y maven tar
@@ -38,15 +38,20 @@ jobs:
 
   docker-build:
     docker:
-      - image: mcr.microsoft.com/azure-cli
+      - image: debian:bullseye-slim  # Added Debian image for installation of apt utilities
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: Install tar
+          name: Install tar and Azure CLI dependencies
           command: |
             apt-get update
-            apt-get install -y tar
+            apt-get install -y tar curl lsb-release apt-transport-https
+            curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+            AZ_REPO=$(lsb_release -cs)
+            echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | tee /etc/apt/sources.list.d/azure-cli.list
+            apt-get update
+            apt-get install -y azure-cli
       - setup_remote_docker
       - attach_workspace:
           at: ~/repo
@@ -59,16 +64,17 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t $ACR_NAME.azurecr.io/your-docker-image-name:latest .
-      #      - run:
-      #          name: Test Docker Image
-      #          command: |
-      #            docker run --rm -d -p 8080:8080 your-docker-image-name
-      #            sleep 10
-      #            curl -f http://localhost:8080/actuator/health || exit 1
+        #      - run:
+        #          name: Test Docker Image
+        #          command: |
+        #            docker run --rm -d -p 8080:8080 your-docker-image-name
+        #            sleep 10
+        #            curl -f http://localhost:8080/actuator/health || exit 1
       - run:
           name: Push Docker Image to ACR
           command: |
             docker push $ACR_NAME.azurecr.io/your-docker-image-name:latest
+
 
   coverage:
     executor: java-executor

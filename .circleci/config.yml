@@ -53,7 +53,7 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t $ACR_NAME.azurecr.io/your-docker-image-name:latest .
-            docker tag leosdev/pricing-service:latest $ACR.azurecr.io/pricing-service:latest
+            docker tag leosdev/pricing-service:latest $ACR_NAME.azurecr.io/pricing-service:latest
         #      - run:
         #          name: Test Docker Image
         #          command: |

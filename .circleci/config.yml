@@ -52,12 +52,14 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t $ACR_NAME.azurecr.io/pricing-service:latest .
-        #      - run:
-        #          name: Test Docker Image
-        #          command: |
-        #            docker run --rm -d -p 8080:8080 your-docker-image-name
-        #            sleep 10
-        #            curl -f http://localhost:8080/actuator/health || exit 1
+      - run:
+          name: Test Docker Image
+          command: |
+            CONTAINER_ID=$(docker run --rm -d --network=host $ACR_NAME.azurecr.io/pricing-service:latest)
+            sleep 10
+            docker logs $CONTAINER_ID
+            docker exec -it $CONTAINER_ID sh -c "apt-get update && apt-get install -y curl"
+            docker exec -it $CONTAINER_ID curl -f http://localhost:8080/actuator/health | grep -q '"status":"UP"' || exit 1
       - run:
           name: Push Docker Image to ACR
           command: |

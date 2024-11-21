@@ -1,4 +1,4 @@
-IMAGE_NAME:=leosthewar/price-service
+IMAGE_NAME:=leosdev/price-service
 IMAGE_TAG:=latest
 
 default:

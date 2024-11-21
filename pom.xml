@@ -19,9 +19,6 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<junit.jupiter.version>5.10.0</junit.jupiter.version>
-		<docker.image.prefix>leosthewarregistry.azurecr.io</docker.image.prefix>
-		<jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
-
 	</properties>
 	<dependencies>
 		<dependency>
@@ -137,33 +134,6 @@
 					</annotationProcessorPaths>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>jib-maven-plugin</artifactId>
-				<groupId>com.google.cloud.tools</groupId>
-				<version>${jib-maven-plugin.version}</version>
-				<configuration>
-					<from>
-						<platforms>
-							<platform>
-								<architecture>arm64</architecture>
-								<os>linux</os>
-							</platform>
-						</platforms>
-						<image>mcr.microsoft.com/openjdk/jdk:21-ubuntu</image>
-					</from>
-					<to>
-						<image>${docker.image.prefix}/${project.name}</image>
-						<tags>
-							<tag>latest</tag>
-							<tag>${project.version}</tag>
-						</tags>
-					</to>
-					<container>
-						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-						<mainClass>com.capitole.pricingservice.PricingServiceApplication</mainClass>
-					</container>
 				</configuration>
 			</plugin>
 			<plugin>

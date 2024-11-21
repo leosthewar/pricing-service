@@ -110,6 +110,7 @@ class PriceRestController {
 
         Optional<PriceDTO> priceDTO = priceService.update(priceToUpdateDTO.toPriceUpdateCommand(id))
                                                   .map(PriceDTO::toPriceDTO);
+        logger.info("Update price for brandId: {}, productId: {} ", priceToUpdateDTO.brandId(), priceToUpdateDTO.productId());
         return priceDTO.map(ResponseEntity::ok)
                        .orElseThrow(() -> new PriceNotFoundException("Price not found"));
     }

@@ -42,6 +42,11 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run:
+          name: Install tar
+          command: |
+            apt-get update
+            apt-get install -y tar
       - setup_remote_docker
       - attach_workspace:
           at: ~/repo

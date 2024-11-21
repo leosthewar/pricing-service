@@ -63,8 +63,8 @@ jobs:
       - run:
           name: Push Docker Image to ACR
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS springbootapi.azurecr.io
-            docker push $ACR.azurecr.io/pricing-service:latest
+            docker login -u $DOCKER_USER -p $DOCKER_PASS $ACR_NAME.azurecr.io
+            docker push $ACR_NAME.azurecr.io/pricing-service:latest
 
 
   coverage:

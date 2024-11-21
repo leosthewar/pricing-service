@@ -45,6 +45,9 @@ jobs:
     steps:
       - checkout
       - docker/install-docker-tools
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
       - attach_workspace:
           at: ~/repo
       - run:

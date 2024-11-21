@@ -46,21 +46,24 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
+          name: Log in to Azure Container Registry
+          command: |
+            az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+            az acr login --name $ACR_NAME
+      - run:
           name: Build Docker Image
           command: |
-            docker build -t your-docker-image-name .
+            docker build -t $ACR_NAME.azurecr.io/pricing-service:latest .
+      #      - run:
+      #          name: Test Docker Image
+      #          command: |
+      #            docker run --rm -d -p 8080:8080 your-docker-image-name
+      #            sleep 10
+      #            curl -f http://localhost:8080/actuator/health || exit 1
       - run:
-          name: Test Docker Image
+          name: Push Docker Image to ACR
           command: |
-            docker run --rm -d -p 8080:8080 your-docker-image-name
-            sleep 10
-            curl -f http://localhost:8080/actuator/health || exit 1
-      - run:
-          name: Push Docker Image
-          command: |
-            docker tag your-docker-image-name your-docker-repo/your-docker-image-name:latest
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push your-docker-repo/your-docker-image-name:latest
+            docker push $ACR_NAME.azurecr.io/pricing-service:latest
 
   coverage:
     executor: java-executor

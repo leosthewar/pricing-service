@@ -1,0 +1,74 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.8.1
+
+executors:
+  java-executor:
+    docker:
+      - image: openjdk:21-jdk-slim
+    working_directory: ~/repo
+
+jobs:
+  build:
+    executor: java-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Maven
+          command: |
+            apt-get update
+            apt-get install -y maven tar
+      - restore_cache:
+          keys:
+            - maven-{{ checksum "pom.xml" }}
+            - maven-
+      - run:
+          name: Prepare Maven Dependencies
+          command: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-{{ checksum "pom.xml" }}
+      - run:
+          name: Build, Test, and Generate Coverage
+          command: mvn clean verify jacoco:report
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - target
+
+  docker-build:
+    executor:
+      name: docker/docker
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - docker/install-docker-tools
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t $ACR_NAME.azurecr.io/pricing-service:latest .
+        #      - run:
+        #          name: Test Docker Image
+        #          command: |
+        #            docker run --rm -d -p 8080:8080 your-docker-image-name
+        #            sleep 10
+        #            curl -f http://localhost:8080/actuator/health || exit 1
+      - run:
+          name: Push Docker Image to ACR
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS $ACR_NAME.azurecr.io
+            docker push $ACR_NAME.azurecr.io/pricing-service:latest
+
+workflows:
+  version: 2
+  build-and-push-acr:
+    jobs:
+      - build
+      - docker-build:
+          requires:
+            - build

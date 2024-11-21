@@ -38,7 +38,7 @@ jobs:
 
   docker-build:
     docker:
-      - image: docker:24.0.1
+      - image: mcr.microsoft.com/azure-cli
     working_directory: ~/repo
     steps:
       - checkout

@@ -31,7 +31,11 @@ jobs:
           key: maven-{{ checksum "pom.xml" }}
       - run:
           name: Build, Test, and Generate Coverage
-          command: mvn clean verify 
+          command: mvn clean verify jacoco:report
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - target
 
   docker-build:
     executor:
@@ -60,27 +64,11 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS $ACR_NAME.azurecr.io
             docker push $ACR_NAME.azurecr.io/pricing-service:latest
 
-
-  coverage:
-    executor: java-executor
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: Publish Code Coverage Report
-          command: |
-            echo "JaCoCo Coverage Report generated:"
-            ls -l target/site/jacoco/
-  
-
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build
       - docker-build:
-          requires:
-            - build
-      - coverage:
           requires:
             - build

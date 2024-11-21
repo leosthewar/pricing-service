@@ -5,10 +5,6 @@ executors:
     docker:
       - image: openjdk:21-jdk-slim
     working_directory: ~/repo
-    steps:
-      - run:
-          name: Install tar
-          command: apt-get update && apt-get install -y tar
 
 jobs:
   build:
@@ -19,7 +15,7 @@ jobs:
           name: Install Maven
           command: |
             apt-get update
-            apt-get install -y maven
+            apt-get install -y maven tar
       - restore_cache:
           keys:
             - maven-{{ checksum "pom.xml" }}
